@@ -1,0 +1,80 @@
+/* ============================================================================
+   Note Text Align —— 笔记正文的水平对齐
+   ----------------------------------------------------------------------------
+   只有 text-align，没有颜色、没有布局改动 —— 所以这里一个主题变量都不需要，
+   深浅色模式自动就对。
+
+   插件往笔记 frontmatter 的 cssclasses 里写一个类名，Obsidian 会把它加到
+   这篇笔记的视图容器上。所以下面每条规则都是「祖先类名 + 笔记正文」的写法。
+
+   本文件分 3 段：
+     ① 四种对齐（nta-*）          ② 旧类名兼容（cta-note-*）
+     ③ 两端对齐：最后一行也拉满（设置里的开关）
+
+   ★ 本文件刻意不含 has 伪类：Obsidian 目录的自动审核有 CSS LINT 一项，
+     会因「大范围选择器失效 → 性能问题」把它判为警告。用类名选择器是等价的，
+     没有这个副作用。改动时请不要把 has 伪类加回来。
+   ★ 连注释里都别写出它的完整字面形式（带括号那个）—— 构建脚本 tools/build.mjs
+     扫的是**原文**，注释里出现也会报一条警告（踩过一次）。
+   ============================================================================ */
+
+
+/* ═══════════════════════════════════════════ ① 四种对齐 ═════════════════════ */
+
+/* 每条都要管两种渲染路径，缺一个就会"看着没生效"：
+     · 阅读视图 / 实时预览的渲染态 → .markdown-preview-view.markdown-rendered
+     · 源码模式 / 实时预览的编辑态 → .markdown-source-view.mod-cm6 里的
+       .cm-content（整块）和 .cm-line（每一行）
+   ★ CM6 里每一行是独立元素，只给 .cm-content 设对齐会被行内样式盖掉，
+     所以 .cm-line 必须一起写。 */
+.nta-left .markdown-preview-view.markdown-rendered,
+.nta-left .markdown-source-view.mod-cm6 .cm-content,
+.nta-left .markdown-source-view.mod-cm6 .cm-line { text-align: left; }
+
+.nta-center .markdown-preview-view.markdown-rendered,
+.nta-center .markdown-source-view.mod-cm6 .cm-content,
+.nta-center .markdown-source-view.mod-cm6 .cm-line { text-align: center; }
+
+.nta-right .markdown-preview-view.markdown-rendered,
+.nta-right .markdown-source-view.mod-cm6 .cm-content,
+.nta-right .markdown-source-view.mod-cm6 .cm-line { text-align: right; }
+
+.nta-justify .markdown-preview-view.markdown-rendered,
+.nta-justify .markdown-source-view.mod-cm6 .cm-content,
+.nta-justify .markdown-source-view.mod-cm6 .cm-line { text-align: justify; }
+
+
+/* ═══════════════════════════════════════════ ② 旧类名兼容 ═══════════════════ */
+
+/* 这个功能以前由 Canvas Node Align 提供，写进笔记的类名是 cta-note-*。
+   插件读得出旧类名，但**不会主动改写用户文件** —— 所以样式得留着，
+   老笔记才不会突然失去对齐。在那篇笔记上重新点一次对齐，类名就换成 nta-*。
+
+   等哪天确认没有老笔记了（比如 1.x 之后），这三条可以整体删掉。 */
+.cta-note-left .markdown-preview-view.markdown-rendered,
+.cta-note-left .markdown-source-view.mod-cm6 .cm-content,
+.cta-note-left .markdown-source-view.mod-cm6 .cm-line { text-align: left; }
+
+.cta-note-center .markdown-preview-view.markdown-rendered,
+.cta-note-center .markdown-source-view.mod-cm6 .cm-content,
+.cta-note-center .markdown-source-view.mod-cm6 .cm-line { text-align: center; }
+
+.cta-note-right .markdown-preview-view.markdown-rendered,
+.cta-note-right .markdown-source-view.mod-cm6 .cm-content,
+.cta-note-right .markdown-source-view.mod-cm6 .cm-line { text-align: right; }
+
+.cta-note-justify .markdown-preview-view.markdown-rendered,
+.cta-note-justify .markdown-source-view.mod-cm6 .cm-content,
+.cta-note-justify .markdown-source-view.mod-cm6 .cm-line { text-align: justify; }
+
+
+/* ═══════════════════════════════════════════ ③ 最后一行也拉满 ═══════════════ */
+
+/* 按排版规范，两端对齐**不拉伸最后一行**。用中文写的一两句话通常就是一段，
+   于是看起来和左对齐一模一样 —— 不是没生效，是没有可拉伸的行。
+   设置里打开「最后一行也拉满」，插件会给 <body> 挂上 nta-justify-last，
+   下面两条就生效（新前缀和旧前缀各一条；旧前缀那条等兼容期结束一起删）。 */
+body.nta-justify-last .nta-justify .markdown-preview-view.markdown-rendered :is(p, li),
+body.nta-justify-last .cta-note-justify .markdown-preview-view.markdown-rendered :is(p, li) {
+  text-align-last: justify;
+}

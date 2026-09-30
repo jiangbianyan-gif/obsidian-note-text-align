@@ -1,0 +1,10 @@
+{
+  "id": "note-text-align",
+  "name": "Note Text Align",
+  "version": "1.0.0",
+  "minAppVersion": "1.5.0",
+  "description": "Set the alignment of a Markdown note body (left, center, right, justify) from the editor right-click menu or the command palette. Written to the note frontmatter, so it is reversible and each note keeps its own setting.",
+  "author": "jiangbianyan-gif",
+  "authorUrl": "https://github.com/jiangbianyan-gif",
+  "isDesktopOnly": false
+}

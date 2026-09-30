@@ -1,0 +1,24 @@
+{
+  "name": "obsidian-note-text-align",
+  "version": "1.0.0",
+  "description": "Horizontal text alignment for Markdown note bodies in Obsidian.",
+  "author": "jiangbianyan-gif",
+  "license": "MIT",
+  "private": true,
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jiangbianyan-gif/obsidian-note-text-align.git"
+  },
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "release:zip": "node tools/build.mjs --zip",
+    "test": "node test/note.test.js && node test/build.test.mjs",
+    "check": "node --check main.js",
+    "check:manifest": "node tools/check-manifest.mjs",
+    "verify": "npm run check:manifest && npm run build && npm test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
